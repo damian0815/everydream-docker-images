@@ -31,8 +31,8 @@ RUN export FORCE_CUDA=1 && export TORCH_CUDA_ARCH_LIST=8.6 && CUDA_VISIBLE_DEVIC
     pip install git+https://github.com/facebookresearch/xformers.git#egg=xformers
 
 # Precache .cache with huggingface files
-RUN mkdir -p /root/.cache/huggingface/
-ADD cache/huggingface/* /root/.cache/huggingface/
+#RUN mkdir -p /root/.cache/huggingface/
+#ADD cache/huggingface/* /root/.cache/huggingface/
 
 # Add EveryDream repo
 ADD repo/EveryDream2trainer /everydream2
@@ -42,3 +42,6 @@ RUN python3 utils/get_yamls.py
 # Add welcome banner
 ADD welcome-banner.txt /root/welcome-banner.txt
 RUN echo "cat ~/welcome-banner.txt" >> ~/.bashrc
+
+ENTRYPOINT ["bash"]
+CMD ["-c", "sleep infinity"]
