@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive\
 
 # Install base utilities and Python 3.10
 RUN apt-get update && apt-get upgrade -y && apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get install -y wget git python3.10-dev python3.10-venv curl zip unzip git-lfs && \
+    apt-get install -y wget git python3.10-dev python3.10-venv curl zip unzip git-lfs tmux vim && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
