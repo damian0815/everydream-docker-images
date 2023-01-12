@@ -35,9 +35,10 @@ RUN export FORCE_CUDA=1 && export TORCH_CUDA_ARCH_LIST=8.6 && CUDA_VISIBLE_DEVIC
 #ADD cache/huggingface/* /root/.cache/huggingface/
 
 # Add EveryDream repo
-ADD repo/EveryDream2trainer /everydream2
-WORKDIR everydream2
-RUN python3 utils/get_yamls.py
+WORKDIR /
+RUN git clone https://github.com/victorchall/EveryDream2trainer everydream2 && \
+    cd everydream2 && \
+    python3 utils/get_yamls.py
 
 # Add welcome banner
 ADD welcome-banner.txt /root/welcome-banner.txt
