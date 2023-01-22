@@ -16,19 +16,19 @@ RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 0
 
 # Install Pytorch 1.21.1 for CUDA 1.16
-RUN pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
+RUN pip install --no-cache-dir torch==1.12.1+cu116 torchvision==0.13.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116 
 
 # Install required python modules
 ADD requirements.txt .
-RUN python3 --version && pip install -r requirements.txt
+RUN python3 --version && pip install --no-cache-dir -r requirements.txt
 
 # Install transformers and upgrade requests
-RUN pip install transformers -i https://pypi.python.org/simple && \
-    pip install requests --upgrade
+RUN pip install --no-cache-dir transformers -i https://pypi.python.org/simple && \
+    pip install --no-cache-dir requests --upgrade
 
 # Install xformers (shouldn't take too long since ninja is installed)
 RUN export FORCE_CUDA=1 && export TORCH_CUDA_ARCH_LIST=8.6 && CUDA_VISIBLE_DEVICES=0 && \
-    pip install git+https://github.com/facebookresearch/xformers.git#egg=xformers
+    pip install --no-cache-dir git+https://github.com/facebookresearch/xformers.git#egg=xformers
 
 # Precache .cache with huggingface files
 #RUN mkdir -p /root/.cache/huggingface/
