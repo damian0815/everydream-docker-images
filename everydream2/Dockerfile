@@ -1,12 +1,14 @@
-FROM nvidia/cuda:11.6.2-cudnn8-devel-ubuntu20.04
+# Based off https://www.runpod.io/blog/diy-deep-learning-docker-container
+FROM nvidia/cuda:11.6.2-cudnn8-devel-ubuntu20.04 
 
-# Install requirements
+# Use bash shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND noninteractive\
     SHELL=/bin/bash
 
 # Install base utilities and Python 3.10
 RUN apt-get update && apt-get upgrade -y && apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get install -y wget git python3.10-dev python3.10-venv curl zip unzip git-lfs tmux vim kbd && \
+    apt-get install -y wget git python3.10-dev python3.10-venv curl zip unzip git-lfs tmux vim kbd openssh-server && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
@@ -26,6 +28,10 @@ RUN python3 --version && pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir transformers -i https://pypi.python.org/simple && \
     pip install --no-cache-dir requests --upgrade
 
+# Install jupyter lab
+RUN pip install --no-cache-dir jupyterlab
+RUN pip install --no-cache-dir ipywidgets
+
 # Install xformers (shouldn't take too long since ninja is installed)
 RUN export FORCE_CUDA=1 && export TORCH_CUDA_ARCH_LIST=8.6 && CUDA_VISIBLE_DEVICES=0 && \
     pip install --no-cache-dir git+https://github.com/facebookresearch/xformers.git#egg=xformers
@@ -44,5 +50,8 @@ RUN git clone https://github.com/victorchall/EveryDream2trainer everydream2 && \
 ADD welcome-banner.txt /root/welcome-banner.txt
 RUN echo "cat ~/welcome-banner.txt" >> ~/.bashrc
 
-ENTRYPOINT ["bash"]
-CMD ["-c", "sleep infinity"]
+ADD start.sh /
+
+RUN chmod +x /start.sh
+
+CMD [ "/start.sh" ]
