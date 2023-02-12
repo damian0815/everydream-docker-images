@@ -3,7 +3,7 @@ pynvml
 bitsandbytes
 ftfy
 aiohttp
-tensorboard>=2.11.0
+tensorboard==2.11.2
 protobuf
 wandb
 pyre-extensions
