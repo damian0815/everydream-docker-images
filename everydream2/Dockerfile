@@ -42,11 +42,13 @@ RUN python3 --version && pip install --no-cache-dir -r requirements.txt && \
 #RUN mkdir -p /root/.cache/huggingface/
 #ADD cache/huggingface/* /root/.cache/huggingface/
 
-# Add EveryDream repo
+# Add EveryDream repo, add damian0815 fork, assign a default user.email for quickfix merging
 WORKDIR /
 RUN git clone https://github.com/victorchall/EveryDream2trainer everydream2 && \
     cd everydream2 && \
-    python3 utils/get_yamls.py
+    python3 utils/get_yamls.py && \
+    git remote add damian0815 https://github.com/damian0815/EveryDream2trainer && \
+    git config --global user.email "nobody@nowhere.no"
 
 # Add welcome banner
 ADD welcome-banner.txt /root/welcome-banner.txt
