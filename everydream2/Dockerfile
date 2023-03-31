@@ -35,7 +35,7 @@ RUN python3 --version && pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir requests --upgrade && \
     pip install --no-cache-dir jupyterlab && \
     pip install --no-cache-dir ipywidgets && \
-    export FORCE_CUDA=1 && export TORCH_CUDA_ARCH_LIST="8.0 8.6 8.9" && CUDA_VISIBLE_DEVICES=0 && \
+    export FORCE_CUDA=1 && export TORCH_CUDA_ARCH_LIST=8.6 && CUDA_VISIBLE_DEVICES=0 && \
     pip install --no-cache-dir git+https://github.com/facebookresearch/xformers.git#egg=xformers
 
 # Precache .cache with huggingface files
